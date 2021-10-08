@@ -18,5 +18,8 @@
   },
   "engines": {
     "node": "14.x"
-  }
+  },
+  "author": "Vanessa <vane789vane@hotmail.com>",
+  "license": "MIT",
+  "repository": "https://github.com/devRookies1/api_vehiculos.git"
 }
