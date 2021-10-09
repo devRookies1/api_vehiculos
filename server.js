@@ -1,33 +1,27 @@
-// Loads the configuration from config.env to process.env
-require('dotenv').config({ path: './config.env' });
 
-const express = require('express');
-const cors = require('cors');
-// get MongoDB driver connection
-const dbo = require('./db/conn');
+import Express from 'express';
+import Cors from 'cors';
+import dotenv from 'dotenv';
+import { conectarBD } from './db/db.js';
+import rutasVehiculo from './views/vehiculos/rutas.js';
+import rutasUsuario from './views/usuarios/rutas.js';
+import rutasVenta from './views/ventas/rutas.js';
 
-const PORT = process.env.PORT || 5000;
-const app = express();
+dotenv.config({ path: './.env' });
+const stringConexion = process.env.DATABASE_URL;
 
-app.use(cors());
-app.use(express.json());
-app.use(require('./routes/vehicle'));
+const app = Express();
 
-// Global error handling
-app.use(function (err, _req, res) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
+app.use(Express.json());
+app.use(Cors());
+app.use(rutasVehiculo);
+app.use(rutasUsuario);
+app.use(rutasVenta);
 
-// perform a database connection when the server starts
-dbo.connectToServer(function (err) {
-  if (err) {
-    console.error(err);
-    process.exit();
-  }
-
-  // start the Express server
-  app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
+const main = () => {
+  return app.listen(process.env.PORT, () => {
+    console.log(`escuchando puerto ${process.env.PORT}`);
   });
-});
+};
+
+conectarBD(main);
