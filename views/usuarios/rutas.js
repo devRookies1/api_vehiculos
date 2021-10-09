@@ -22,7 +22,7 @@ rutasUsuario.route('/usuarios').get((req, res) => {
   queryAllUsers(genercCallback(res));
 });
 
-rutasUsuario.route('/usuarios/crear').post((req, res) => {
+rutasUsuario.route('/usuarios').post((req, res) => {
   crearUsuario(req.body, genercCallback(res));
 });
 
