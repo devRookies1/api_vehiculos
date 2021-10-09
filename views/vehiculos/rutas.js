@@ -22,7 +22,7 @@ rutasVehiculo.route('/vehiculos').get((req, res) => {
   queryAllVehicles(genercCallback(res));
 });
 
-rutasVehiculo.route('/vehiculos').post((req, res) => {
+rutasVehiculo.route('/vehiculos/crear').post((req, res) => {
   crearVehiculo(req.body, genercCallback(res));
 });
 
