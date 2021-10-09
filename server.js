@@ -1,4 +1,3 @@
-
 import Express from 'express';
 import Cors from 'cors';
 import dotenv from 'dotenv';
@@ -8,7 +7,6 @@ import rutasUsuario from './views/usuarios/rutas.js';
 import rutasVenta from './views/ventas/rutas.js';
 
 dotenv.config({ path: './.env' });
-const stringConexion = process.env.DATABASE_URL;
 
 const app = Express();
 
