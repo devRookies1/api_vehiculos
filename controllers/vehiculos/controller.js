@@ -7,16 +7,9 @@ const queryAllVehicles = async (callback) => {
 };
 
 const crearVehiculo = async (datosVehiculo, callback) => {
-  if (
-    Object.keys(datosVehiculo).includes('Nombre') &&
-    Object.keys(datosVehiculo).includes('ValorUnitario') &&
-    Object.keys(datosVehiculo).includes('Estado')
-  ) {
+ 
     const baseDeDatos = getDB();
     await baseDeDatos.collection('vehiculos').insertOne(datosVehiculo, callback);
-  } else {
-    return 'error';
-  }
 };
 
 const consultarVehiculo = async (id, callback) => {
