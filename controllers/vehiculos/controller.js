@@ -3,13 +3,25 @@ import { getDB } from '../../db/db.js';
 
 const queryAllVehicles = async (callback) => {
   const baseDeDatos = getDB();
+  console.log('query');
   await baseDeDatos.collection('vehiculos').find({}).limit(50).toArray(callback);
 };
 
+
 const crearVehiculo = async (datosVehiculo, callback) => {
+  if (
+    Object.keys(datosVehiculo).includes('id')&&
+    Object.keys(datosVehiculo).includes('nombre') &&
+    Object.keys(datosVehiculo).includes('marca') &&
+    Object.keys(datosVehiculo).includes('precio') &&
+    Object.keys(datosVehiculo).includes('estado')
  
+  ) {
     const baseDeDatos = getDB();
     await baseDeDatos.collection('vehiculos').insertOne(datosVehiculo, callback);
+  } else {
+    return 'error';
+  }
 };
 
 const consultarVehiculo = async (id, callback) => {
