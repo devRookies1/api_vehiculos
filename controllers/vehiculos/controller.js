@@ -7,7 +7,6 @@ const queryAllVehicles = async (callback) => {
   await baseDeDatos.collection('vehiculos').find({}).limit(50).toArray(callback);
 };
 
-
 const crearVehiculo = async (datosVehiculo, callback) => {
   if (
     Object.keys(datosVehiculo).includes('id')&&
