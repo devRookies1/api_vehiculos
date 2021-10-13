@@ -31,7 +31,7 @@ const editarUsuario = async (id, edicion, callback) => {
 const eliminarUsuario = async (id, callback) => {
   const filtroUsuario = { _id: new ObjectId(id) };
   const baseDeDatos = getDB();
-  await baseDeDatos.collection('usuario').deleteOne(filtroUsuario, callback);
+  await baseDeDatos.collection('usuarios').deleteOne(filtroUsuario, callback);
 };
 
 export { queryAllUsers, crearUsuario, consultarUsuario, editarUsuario, eliminarUsuario };
