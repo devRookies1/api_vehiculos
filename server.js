@@ -1,33 +1,44 @@
-// Loads the configuration from config.env to process.env
-require('dotenv').config({ path: './config.env' });
+import Express from 'express';
+import Cors from 'cors';
+import dotenv from 'dotenv';
+import { conectarBD } from './db/db.js';
+import rutasVehiculo from './views/vehiculos/rutas.js';
+import rutasUsuario from './views/usuarios/rutas.js';
+import rutasVenta from './views/ventas/rutas.js';
+import jwt from 'express-jwt';
+import jwks from 'jwks-rsa';
+import autorizacionEstadoUsuario from './middleware/autorizacionEstadoUsuario.js';
 
-const express = require('express');
-const cors = require('cors');
-// get MongoDB driver connection
-const dbo = require('./db/conn');
+dotenv.config({ path: './.env' });
 
-const PORT = process.env.PORT || 5000;
-const app = express();
+const app = Express();
 
-app.use(cors());
-app.use(express.json());
-app.use(require('./routes/vehicle'));
+app.use(Express.json());
+app.use(Cors());
 
-// Global error handling
-app.use(function (err, _req, res) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: 'https://devrookies-vehiculos.us.auth0.com/.well-known/jwks.json',
+  }),
+  audience: 'api-autenticacion-vehiculos',
+  issuer: 'https://devrookies-vehiculos.us.auth0.com/',
+  algorithms: ['RS256'],
 });
 
-// perform a database connection when the server starts
-dbo.connectToServer(function (err) {
-  if (err) {
-    console.error(err);
-    process.exit();
-  }
+app.use(jwtCheck);
+app.use(autorizacionEstadoUsuario);
+app.use(rutasVehiculo);
+app.use(rutasUsuario);
+app.use(rutasVenta);
 
-  // start the Express server
-  app.listen(PORT, () => {
-    console.log(`Server is running on port: ${PORT}`);
+const main = () => {
+  return app.listen(process.env.PORT, () => {
+    console.log(`escuchando puerto ${process.env.PORT}`);
   });
-});
+};
+
+conectarBD(main);
